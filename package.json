@@ -1,0 +1,28 @@
+{
+  "name": "node",
+  "version": "0.1.0",
+  "description": "chat mejor que telegram",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anibalortegap/node.git"
+  },
+  "keywords": [
+    "chat",
+    "socket",
+    "node"
+  ],
+  "author": "Anibal Fernando Ortega Piedrahita",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anibalortegap/node/issues"
+  },
+  "homepage": "https://github.com/anibalortegap/node#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
