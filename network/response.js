@@ -3,7 +3,7 @@ exports.success = (req, res, message, status) => {
         error: '',
         body: message
     });
-}
+};
 
 exports.error = (req, res, error, status, detailError) => {
     console.error('[response error]' + detailError);
@@ -11,4 +11,4 @@ exports.error = (req, res, error, status, detailError) => {
         error: error,
         body: ''
     });
-}
+};

@@ -1,17 +1,4 @@
-const db = require('mongoose');
 const Model = require('./model');
-
-const db_url = 'mongodb+srv://db_user_platzi_chat:cQzpGmM0DAM2@cluster0-ybgzp.mongodb.net/platzichat_db?retryWrites=true&w=majority';
-//mongoose use native Promise JS
-db.Promise = global.Promise;
-db.connect(db_url, {
-    //backward compatibility of mongoDB
-    useNewUrlParser: true,
-    //enable engine the discovery and monitoring the server 
-    useUnifiedTopology: true
-});
-
-console.log('[db] connect succesfull');
 
 function addMessage(message){
     const myMessage = new Model(message);
@@ -19,12 +6,33 @@ function addMessage(message){
 
 };
 
-async function getMessage(){
-    const messages = await Model.find();
+async function getMessage(filterUser){
+    let filter = {};
+    if(filterUser !== null) {
+        filter = { user: filterUser }
+    }
+    const messages = await Model.find(filter);
     return messages
+};
+
+async function updateTextMesssage(id, message) {
+    const foundMessage = await Model.findOne({ 
+        _id: id 
+    });
+    foundMessage.message = message;
+    const newMessage = await foundMessage.save();
+    return newMessage;
+};
+
+function deleteMessage(id) {
+    return Model.deleteOne({
+        _id: id
+    });
 };
 
 module.exports = {
     add: addMessage,
     list: getMessage,
-}
+    updateText: updateTextMesssage,
+    delete: deleteMessage
+};

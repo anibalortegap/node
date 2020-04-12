@@ -5,6 +5,12 @@ const bodyParser = require('body-parser');
 //add dependencies of router message
 const router =  require('./network/routes');
 
+const db = require('./db');
+
+const db_url = 'mongodb+srv://db_user_platzi_chat:cQzpGmM0DAM2@cluster0-ybgzp.mongodb.net/platzichat_db?retryWrites=true&w=majority';
+
+db(db_url);
+
 var app = express();
 //add support body with json
 app.use(bodyParser.json());
