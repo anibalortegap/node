@@ -4,20 +4,37 @@ const router = express.Router();
 const response = require('../../network/response');
 //add dependencies local controller message
 const messageController = require('./controller');
+//add dependencies send file in requuest
+const multer = require('multer');
+
+const upload = multer({
+    dest: 'public/files/'
+});
 
 router.get('/', (req, res) => {
-    const filterMessageUser = req.query.user || null;
-    messageController.getMessages(filterMessageUser)
+    if(req.query.chat){
+        const filterMessageChat = req.query.chat || null;
+        messageController.getMessageByChat(filterMessageChat)
         .then((messageList) => {
             response.success(req, res, messageList, 200);
         })
         .catch(err => {
             response.error(req, res, 'unexpected Error', 500, err);
         })
+    } else {
+        const filterMessageUser = req.query.user || null;
+        messageController.getMessageByChat(filterMessageUser)
+            .then((messageList) => {
+                response.success(req, res, messageList, 200);
+            })
+            .catch(err => {
+                response.error(req, res, 'unexpected Error', 500, err);
+            })
+    }
 });
 
-router.post('/', (req, res) => {
-    messageController.addMessage(req.body.user, req.body.message)
+router.post('/', upload.single('file'), (req, res) => {
+    messageController.addMessage(req.body.user, req.body.message, req.body.chat, req.file)
         .then((fullMessage) => {
             response.success(req, res, fullMessage, 201);
         })

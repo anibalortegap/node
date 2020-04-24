@@ -1,24 +1,38 @@
 const storeMessage = require('./store');
 
-function addMessage(user, message) {
+function addMessage(user, message, chat, file) {
     return new Promise((resolve, reject) => {
-        if(!user || !message) {
+        if(!user || !message || !chat) {
             console.error('[messageController] not user or message');
             return reject(new Error('the data is incorrect'));
         };
+
+        let fileUrl = '';
+        if(file) {
+            fileUrl = 'http://localhost:3000/app/public/files' + file.filename;
+        }
         const fullMessage = {
+            chat: chat,
             user: user,
             message: message,
             date: new Date(),
+            file: fileUrl
         };
-        storeMessage.add(fullMessage);
+        storeMessage.add(fullMessage)
         resolve(fullMessage);
     })
 };
 
-function getMessages(filterUser) {
+function getMessageByUser(filterUser) {
     return new Promise((resolve, reject) => {
-        const listMessage = storeMessage.list(filterUser);
+        const listMessage = storeMessage.listUser(filterUser);
+        resolve(listMessage);
+    });
+};
+
+function getMessageByChat(filterChat) {
+    return new Promise((resolve, reject) => {
+        const listMessage = storeMessage.listChat(filterChat);
         resolve(listMessage);
     });
 };
@@ -52,7 +66,8 @@ function deleteMessage(id) {
 
 module.exports = {
     addMessage,
-    getMessages,
     updateMessage,
-    deleteMessage
+    deleteMessage,
+    getMessageByUser,
+    getMessageByChat
 };
